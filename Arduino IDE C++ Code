@@ -1,0 +1,47 @@
+#include<OneWire.h>
+#include<DallasTemperature.h>
+#define ONE_WIRE_BUS 12
+OneWire oneWire(ONE_WIRE_BUS);
+DallasTemperature sensors(&oneWire);
+const int numSensors = 3;
+const float threshold = 0.01;
+const int reminderTime = 10;
+unsigned long timer[numSensors];
+bool isBoxPresent[numSensors];
+void setup() {
+Serial.begin(9600);
+sensors.begin();
+for (int i = 0; i < numSensors; i++) {
+pinMode(i, INPUT);
+timer[i] = millis();
+isBoxPresent[i] = true;
+}
+}
+void loop() {
+sensors.requestTemperatures();
+Serial.println(sensors.getTempCByIndex(0));
+for (int i = 0; i < numSensors; i++) {
+float forceValue = analogRead(i) * 0.0228;
+if (forceValue < threshold && isBoxPresent[i]) {
+//
+Serial.print("Restock Box ");
+Serial.println(i);
+isBoxPresent[i] = false;
+timer[i] = millis();
+}
+else if (forceValue >= threshold && !isBoxPresent[i]) {
+Serial.print("Box ");
+Serial.print(i);
+Serial.println(" Restocked");
+isBoxPresent[i] = true;
+}
+//
+if (!isBoxPresent[i] && millis() - timer[i] >= reminderTime * 1000) {
+Serial.print("Put Box ");
+Serial.print(i);
+Serial.println(" Back");
+timer[i] = millis();
+}
+}
+delay(1000);
+}
