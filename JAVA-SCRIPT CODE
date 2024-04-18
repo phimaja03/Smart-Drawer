@@ -1,0 +1,32 @@
+//JavaScript Code to filter the serial input
+var m=msg.payload.trim();
+if(m=='Box 0 Restocked'){
+msg.payload="Container 0 Restocked";
+return msg;
+} else if (m == 'Restock Box 0') {
+msg.payload = "Restock Container 0";
+return msg;
+}else if(m=='Put Box 0 Back'){
+msg.payload="Put Container 0 Back";
+return msg;
+} if (m == 'Box 1 Restocked') {
+msg.payload = "Container 1 Restocked";
+return msg;
+} else if (m == 'Restock Box 1') {
+msg.payload = "Restock Container 1";
+return msg;
+} else if (m == 'Put Box 1 Back') {
+msg.payload = "Put Container 1 Back";
+return msg;
+} else if (m == 'Box 2 Restocked') {
+msg.payload = "Container 2 Restocked";
+return msg;
+} else if (m == 'Restock Box 2') {
+msg.payload = "Restock Container 2";
+return msg;
+} else if (m == 'Put Box 2 Back') {
+msg.payload = "Put Container 2 Back";
+return msg;
+}else{
+return msg;
+}
